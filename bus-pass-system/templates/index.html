@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>Welcome to Trans Pass Hub</h1>
+        <p>Your digital solution for seamless bus transportation</p>
+        <a href="{{ url_for('register') }}" class="btn">Get Started</a>
+    </div>
+</section>
+
+<!-- Matatu Slideshow -->
+<section class="container">
+    <div class="slideshow-container">
+        <div class="slide active">
+            <img src="{{ url_for('static', filename='images/nganya.jpg') }}" alt="Modern Matatu">
+            <div class="slide-content">
+                <h3>🚍Modern Fleet</h3>
+                <p>Experience comfort and safety with our modern matatu fleet</p>
+            </div>
+        </div>
+        
+        <div class="slide">
+            <img src="{{ url_for('static', filename='images/Payments.jpeg') }}" alt="Digital Payment">
+            <div class="slide-content">
+                <h3>💳Digital Payments</h3>
+                <p>Pay seamlessly with M-Pesa and other digital payment methods</p>
+            </div>
+        </div>
+        
+        <div class="slide">
+            <img src="{{ url_for('static', filename='images/Eldoret.jpg') }}" alt="Route Network">
+            <div class="slide-content">
+                <h3>🚦Extensive Routes</h3>
+                <p>Connecting you to all major destinations across the region</p>
+            </div>
+        </div>
+        
+        <div class="slide">
+            <img src="{{ url_for('static', filename='images/qr-phone.jpg') }}" alt="QR Technology">
+            <div class="slide-content">
+                <h3>🔥 Scan & Ride</h3>
+                <p>Quick and contactless boarding with QR code passes</p>
+            </div>
+        </div>
+        
+        <!-- Navigation arrows -->
+        <button class="prev" onclick="prevSlide()">&#10094;</button>
+        <button class="next" onclick="nextSlide()">&#10095;</button>
+    </div>
+    
+    <!-- Dots indicators -->
+    <div class="dots-container">
+        <span class="dot active" onclick="currentSlide(0)"></span>
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+    </div>
+</section>
+
+<section class="features">
+    <div class="feature">
+        <div class="feature-icon">🎫</div>
+        <h3>Digital Passes</h3>
+        <p>Generate and manage your bus passes digitally with QR codes</p>
+    </div>
+    <div class="feature">
+        <div class="feature-icon">💳</div>
+        <h3>Easy Payments</h3>
+        <p>Top up your account with M-Pesa and other payment methods</p>
+    </div>
+    <div class="feature">
+        <div class="feature-icon">📱</div>
+        <h3>Mobile Friendly</h3>
+        <p>Access your passes and account from any device</p>
+    </div>
+    <div class="feature">
+        <div class="feature-icon">🚌</div>
+        <h3>Multiple Routes</h3>
+        <p>Support for various bus routes and schedules</p>
+    </div>
+</section>
+
+<section class="card">
+    <h2>How It Works</h2>
+    <ol>
+        <li><strong>Register:</strong> Create your account as a passenger or driver</li>
+        <li><strong>Top Up:</strong> Add money to your account using M-Pesa</li>
+        <li><strong>Generate Pass:</strong> Create your digital bus pass with QR code</li>
+        <li><strong>Travel:</strong> Show your QR code to the driver when boarding</li>
+    </ol>
+</section>
+{% endblock %}

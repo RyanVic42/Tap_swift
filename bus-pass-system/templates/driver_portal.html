@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Driver Portal - {{ username }}{% endblock %}
+
+{% block content %}
+<h1>Driver Portal - {{ username }} 🚌</h1>
+
+<div class="dashboard-grid">
+    <div class="card stats-card">
+        <div class="stats-number">{{ routes|length }}</div>
+        <div class="stats-label">Available Routes</div>
+    </div>
+    
+    <div class="card stats-card">
+        <div class="stats-number">Active</div>
+        <div class="stats-label">Status</div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>QR Code Scanner</h3>
+    <p>Use your mobile device camera to scan passenger QR codes</p>
+    <button class="btn" onclick="startScanner()">Start Scanner</button>
+    <div id="scanner-result" style="margin-top: 1rem; display: none;">
+        <h4>Scan Result:</h4>
+        <div id="passenger-info"></div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Route Information</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Route</th>
+                <th>Sacco</th>
+                <th>Price</th>
+                <th>Schedule</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for route in routes %}
+            <tr>
+                <td>{{ route.name }}</td>
+                <td>{{ route.sacco }}</td>
+                <td>KES {{ route.price }}</td>
+                <td>{{ route.schedule|join(', ') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="card">
+    <h3>Manual Verification</h3>
+    <div class="form-group">
+        <label for="passenger-id">Enter Passenger ID:</label>
+        <input type="text" id="passenger-id" placeholder="Enter passenger ID">
+    </div>
+    <button class="btn" onclick="verifyPassenger()">Verify Passenger</button>
+    <div id="verification-result" style="margin-top: 1rem;"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function startScanner() {
+    // Simulate QR scanner
+    showAlert('QR Scanner started. Point camera at QR code.', 'success');
+    
+    // Simulate scan result after 3 seconds
+    setTimeout(() => {
+        const result = document.getElementById('scanner-result');
+        const info = document.getElementById('passenger-info');
+        info.innerHTML = `
+            <p><strong>Passenger:</strong> john_doe</p>
+            <p><strong>Pass Status:</strong> Valid</p>
+            <p><strong>Balance:</strong> KES 500</p>
+        `;
+        result.style.display = 'block';
+        showAlert('QR Code scanned successfully!', 'success');
+    }, 3000);
+}
+
+function verifyPassenger() {
+    const passengerId = document.getElementById('passenger-id').value;
+    if (!passengerId) {
+        showAlert('Please enter a passenger ID', 'error');
+        return;
+    }
+    
+    const result = document.getElementById('verification-result');
+    result.innerHTML = `
+        <div class="alert alert-success">
+            <strong>Verification Result:</strong><br>
+            Passenger ID: ${passengerId}<br>
+            Status: Valid<br>
+            Last Updated: ${new Date().toLocaleString()}
+        </div>
+    `;
+}
+</script>
+{% endblock %}

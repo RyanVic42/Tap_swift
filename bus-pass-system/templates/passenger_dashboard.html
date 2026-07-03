@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - {{ username }}{% endblock %}
+
+{% block content %}
+<h1>Welcome, {{ username }}! 🎫</h1>
+
+<div class="dashboard-grid">
+    <div class="card stats-card">
+        <div class="stats-number">{{ points }}</div>
+        <div class="stats-label">Reward Points</div>
+    </div>
+    
+    <div class="card stats-card">
+        <div class="stats-number">KES {{ balance }}</div>
+        <div class="stats-label">Account Balance</div>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <div class="card">
+        <h3>Your Bus Pass</h3>
+        {% if user_pass %}
+            <div class="qr-container">
+                <img src="{{ url_for('static', filename=user_pass.qr_path.replace('static/', '')) }}" 
+                     alt="QR Code" class="qr-code">
+                <p class="pass-detail"><strong>Pass ID:</strong> {{ user_pass.id[:8] }}...</p>
+                <p class="pass-validity"><strong>Valid Until:</strong> <span>{{ user_pass.validity }}</span></p>
+                <button onclick="downloadQR('{{ url_for('static', filename=user_pass.qr_path.replace('static/', '')) }}', 'bus_pass.png')" 
+                        class="btn btn-secondary">Download QR</button>
+            </div>
+        {% else %}
+            <p>No pass generated yet.</p>
+            <button onclick="generatePass('{{ username }}')" class="btn">Generate Pass</button>
+        {% endif %}
+    </div>
+    
+    <div class="card">
+        <h3>Top Up Account</h3>
+        <div class="form-group">
+            <label for="amount">Amount (KES):</label>
+            <input type="number" id="amount" min="50" placeholder="Minimum 50">
+        </div>
+        <div class="form-group">
+            <label for="payment_method">Payment Method:</label>
+            <select id="payment_method" onchange="updatePaymentFields()">
+                <option value="M-Pesa">M-Pesa</option>
+                <option value="Airtel Money">Airtel Money</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="PayPal">PayPal</option>
+            </select>
+        </div>
+        <div id="mobile-payment-fields">
+            <div class="form-group">
+                <label for="phone_number">Phone Number:</label>
+                <input type="tel" id="phone_number" placeholder="07XXXXXXXX or 01XXXXXXXX">
+            </div>
+            <p class="payment-note">You will be prompted for your mobile money PIN after entering your phone number.</p>
+        </div>
+        <div id="bank-payment-fields" class="payment-fields-hidden">
+            <div class="form-group">
+                <label for="bank_name">Bank:</label>
+                <select id="bank_name">
+                    <option value="">Select bank</option>
+                    <option value="Absa Bank Kenya PLC">Absa Bank Kenya PLC</option>
+                    <option value="Access Bank (Kenya) PLC">Access Bank (Kenya) PLC</option>
+                    <option value="African Banking Corporation Limited">African Banking Corporation Limited</option>
+                    <option value="Bank of Africa Kenya Limited">Bank of Africa Kenya Limited</option>
+                    <option value="Bank of Baroda (Kenya) Limited">Bank of Baroda (Kenya) Limited</option>
+                    <option value="Bank of India">Bank of India</option>
+                    <option value="Citibank N.A. Kenya">Citibank N.A. Kenya</option>
+                    <option value="Consolidated Bank of Kenya Limited">Consolidated Bank of Kenya Limited</option>
+                    <option value="Co-operative Bank of Kenya Limited">Co-operative Bank of Kenya Limited</option>
+                    <option value="Credit Bank PLC">Credit Bank PLC</option>
+                    <option value="Development Bank of Kenya Limited">Development Bank of Kenya Limited</option>
+                    <option value="Diamond Trust Bank Kenya Limited">Diamond Trust Bank Kenya Limited</option>
+                    <option value="DIB Bank Kenya Limited">DIB Bank Kenya Limited</option>
+                    <option value="Ecobank Kenya Limited">Ecobank Kenya Limited</option>
+                    <option value="Equity Bank Kenya Limited">Equity Bank Kenya Limited</option>
+                    <option value="Family Bank Limited">Family Bank Limited</option>
+                    <option value="First Community Bank Limited">First Community Bank Limited</option>
+                    <option value="Guaranty Trust Bank (Kenya) Limited">Guaranty Trust Bank (Kenya) Limited</option>
+                    <option value="Guardian Bank Limited">Guardian Bank Limited</option>
+                    <option value="Gulf African Bank Limited">Gulf African Bank Limited</option>
+                    <option value="Habib Bank AG Zurich">Habib Bank AG Zurich</option>
+                    <option value="HFC Limited">HFC Limited</option>
+                    <option value="I&M Bank Limited">I&M Bank Limited</option>
+                    <option value="KCB Bank Kenya Limited">KCB Bank Kenya Limited</option>
+                    <option value="Kingdom Bank Limited">Kingdom Bank Limited</option>
+                    <option value="Mayfair CIB Bank Limited">Mayfair CIB Bank Limited</option>
+                    <option value="Middle East Bank Kenya Limited">Middle East Bank Kenya Limited</option>
+                    <option value="M Oriental Bank Limited">M Oriental Bank Limited</option>
+                    <option value="National Bank of Kenya Limited">National Bank of Kenya Limited</option>
+                    <option value="NCBA Bank Kenya PLC">NCBA Bank Kenya PLC</option>
+                    <option value="Paramount Bank Limited">Paramount Bank Limited</option>
+                    <option value="Premier Bank Kenya Limited">Premier Bank Kenya Limited</option>
+                    <option value="Prime Bank Limited">Prime Bank Limited</option>
+                    <option value="SBM Bank Kenya Limited">SBM Bank Kenya Limited</option>
+                    <option value="Sidian Bank Limited">Sidian Bank Limited</option>
+                    <option value="Stanbic Bank Kenya Limited">Stanbic Bank Kenya Limited</option>
+                    <option value="Standard Chartered Bank Kenya Limited">Standard Chartered Bank Kenya Limited</option>
+                    <option value="United Bank for Africa Kenya Limited">United Bank for Africa Kenya Limited</option>
+                    <option value="Victoria Commercial Bank PLC">Victoria Commercial Bank PLC</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="account_holder">Account Holder Full Name:</label>
+                <input type="text" id="account_holder" placeholder="Name on bank account">
+            </div>
+            <div class="form-group">
+                <label for="account_number">Account Number:</label>
+                <input type="text" id="account_number" placeholder="Bank account number">
+            </div>
+            <div class="form-group">
+                <label for="national_id">National ID / Passport Number:</label>
+                <input type="text" id="national_id" placeholder="Identification number">
+            </div>
+        </div>
+        <div id="paypal-payment-fields" class="payment-fields-hidden">
+            <div class="form-group">
+                <label for="paypal_email">PayPal Email:</label>
+                <input type="email" id="paypal_email" placeholder="name@example.com">
+            </div>
+            <p class="payment-note">Enter the email address linked to your PayPal account.</p>
+        </div>
+        <button onclick="makePayment('{{ username }}')" class="btn btn-success">Top Up</button>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Available Routes</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Route</th>
+                <th>Sacco</th>
+                <th>Price</th>
+                <th>Schedule</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for route in routes %}
+            <tr>
+                <td>{{ route.name }}</td>
+                <td>{{ route.sacco }}</td>
+                <td>KES {{ route.price }}</td>
+                <td>{{ route.schedule|join(', ') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if payments %}
+<div class="card">
+    <h3>Payment History</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Method</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment in payments %}
+            <tr>
+                <td>KES {{ payment.amount }}</td>
+                <td>{{ payment.method }}</td>
+                <td>{{ payment.date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}

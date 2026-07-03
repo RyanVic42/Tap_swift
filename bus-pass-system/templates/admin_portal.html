@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Portal{% endblock %}
+
+{% block content %}
+<h1>Admin Portal 🔐</h1>
+
+<div class="dashboard-grid">
+    <div class="card stats-card">
+        <div class="stats-number">{{ passengers|length }}</div>
+        <div class="stats-label">Total Passengers</div>
+    </div>
+    
+    <div class="card stats-card">
+        <div class="stats-number">{{ drivers|length }}</div>
+        <div class="stats-label">Total Drivers</div>
+    </div>
+    
+    <div class="card stats-card">
+        <div class="stats-number">{{ routes|length }}</div>
+        <div class="stats-label">Active Routes</div>
+    </div>
+    
+    <div class="card stats-card">
+        <div class="stats-number">{{ admins|length }}</div>
+        <div class="stats-label">System Admins</div>
+    </div>
+</div>
+
+<!-- Admin Management Section -->
+<div class="card">
+    <h3>👥 Admin Management</h3>
+    <div style="margin-bottom: 1rem;">
+        <a href="{{ url_for('admin_register') }}" class="btn btn-success">+ Register New Admin</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Created Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for username, data in admins.items() %}
+            <tr>
+                <td><strong>{{ username }}</strong></td>
+                <td>{{ data.get('full_name', 'N/A') }}</td>
+                <td>{{ data.get('email', 'N/A') }}</td>
+                <td>{{ data.get('created_date', 'N/A') }}</td>
+                <td>
+                    <span style="color: green; font-weight: bold;">
+                        {{ data.get('status', 'Active').title() }}
+                    </span>
+                </td>
+                <td>
+                    <button class="btn btn-secondary" onclick="viewAdmin('{{ username }}')">View</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="card">
+    <h3>Registered Passengers</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Passenger ID</th>
+                <th>Balance</th>
+                <th>Points</th>
+                <th>Created Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for username, data in passengers.items() %}
+            <tr>
+                <td>{{ username }}</td>
+                <td>{{ data.passenger_id[:8] }}...</td>
+                <td>KES {{ data.balance }}</td>
+                <td>{{ data.points }}</td>
+                <td>{{ data.get('created_date', 'N/A') }}</td>
+                <td>
+                    <button class="btn btn-secondary" onclick="viewPassenger('{{ username }}')">View</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="card">
+    <h3>Registered Drivers</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Created Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for username, data in drivers.items() %}
+            <tr>
+                <td>{{ username }}</td>
+                <td>{{ data.role|title }}</td>
+                <td>{{ data.get('created_date', 'N/A') }}</td>
+                <td>Active</td>
+                <td>
+                    <button class="btn btn-secondary" onclick="viewDriver('{{ username }}')">View</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="card">
+    <h3>System Routes</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Route Name</th>
+                <th>Sacco</th>
+                <th>Price</th>
+                <th>Schedule</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for route in routes %}
+            <tr>
+                <td>{{ route.name }}</td>
+                <td>{{ route.sacco }}</td>
+                <td>KES {{ route.price }}</td>
+                <td>{{ route.schedule|join(', ') }}</td>
+                <td>
+                    <button class="btn btn-secondary">Edit</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function viewAdmin(username) {
+    showAlert(`Viewing details for admin: ${username}`, 'success');
+}
+
+function viewPassenger(username) {
+    showAlert(`Viewing details for passenger: ${username}`, 'success');
+}
+
+function viewDriver(username) {
+    showAlert(`Viewing details for driver: ${username}`, 'success');
+}
+</script>
+{% endblock %}

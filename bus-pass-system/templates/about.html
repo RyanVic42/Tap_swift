@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}About - Bus Pass System{% endblock %}
+
+{% block content %}
+<div class="about-page">
+<div class="card">
+    <h1>About Bus Pass System</h1>
+    
+    <p>The Bus Pass System is a modern digital solution designed to streamline public transportation in Kenya. Our platform connects passengers, drivers, and administrators in a seamless ecosystem that makes bus travel more efficient and convenient.</p>
+    
+    <h2>Our Mission</h2>
+    <p>To revolutionize public transportation by providing a digital platform that enhances the travel experience for passengers while empowering drivers and transport operators with modern tools.</p>
+</div>
+
+<!-- Interactive Map Section -->
+<div class="card">
+    <h2>📍 Our Service Areas</h2>
+    <p>We serve major locations across Eldoret and surrounding areas. Click on any location below to view it on the map, or click the markers directly on the map:</p>
+    
+    <!-- Map Container -->
+    <div id="map" class="map-container"></div>
+    
+    <!-- Location Cards with Clickable Links -->
+    <div class="locations-grid">
+        <div class="location-card" onclick="zoomToLocation(0.5143, 35.2697, 'Moi University Main Campus')">
+            <h4>🏫 Moi University Main Campus</h4>
+            <p>Main campus and central hub for student transportation</p>
+            <div class="coordinates">📍 0.5143°N, 35.2697°E</div>
+        </div>
+        
+        <div class="location-card" onclick="zoomToLocation(0.5200, 35.2697, 'Eldoret Town Center')">
+            <h4>🏢 Eldoret Town Center</h4>
+            <p>City center and main business district</p>
+            <div class="coordinates">📍 0.5200°N, 35.2697°E</div>
+        </div>
+        
+        <div class="location-card" onclick="zoomToLocation(0.4500, 35.2800, 'Kesses Market')">
+            <h4>🏘️ Kesses Market</h4>
+            <p>Residential area with shopping centers and markets</p>
+            <div class="coordinates">📍 0.4500°N, 35.2800°E</div>
+        </div>
+        
+        <div class="location-card" onclick="zoomToLocation(0.5100, 35.2600, 'Moi University Annex Campus')">
+            <h4>🎓 Moi University Annex Campus</h4>
+            <p>University annex campus and student facilities</p>
+            <div class="coordinates">📍 0.5100°N, 35.2600°E</div>
+        </div>
+        
+        <div class="location-card" onclick="zoomToLocation(0.4800, 35.3000, 'Cheptiret Shopping Center')">
+            <h4>🏡 Cheptiret Shopping Center</h4>
+            <p>Suburban residential area and community centers</p>
+            <div class="coordinates">📍 0.4800°N, 35.3000°E</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Key Features</h2>
+    <ul>
+        <li><strong>Digital Bus Passes:</strong> Generate QR code-based passes for easy verification</li>
+        <li><strong>Mobile Payments:</strong> Integrated M-Pesa and other payment methods</li>
+        <li><strong>Route Management:</strong> Comprehensive route and schedule information</li>
+        <li><strong>Real-time Updates:</strong> Live updates on bus schedules and routes</li>
+        <li><strong>Reward System:</strong> Earn points for frequent travel</li>
+    </ul>
+    
+    <h2>How It Benefits You</h2>
+    
+    <h3>For Passengers:</h3>
+    <ul>
+        <li>No more physical tickets or cash handling</li>
+        <li>Easy account top-up via mobile money</li>
+        <li>Digital pass storage on your phone</li>
+        <li>Reward points for loyal customers</li>
+    </ul>
+    
+    <h3>For Drivers:</h3>
+    <ul>
+        <li>Quick passenger verification with QR scanner</li>
+        <li>Reduced cash handling and security risks</li>
+        <li>Access to route and schedule information</li>
+        <li>Digital record keeping</li>
+    </ul>
+    
+    <h3>For Administrators:</h3>
+    <ul>
+        <li>Comprehensive system oversight</li>
+        <li>User management and analytics</li>
+        <li>Route and pricing management</li>
+        <li>Financial reporting and insights</li>
+    </ul>
+    
+    <h2>Technology</h2>
+    <p>Our system is built using modern web technologies including Python Flask, HTML5, CSS3, and JavaScript. We prioritize security, reliability, and user experience in all our development efforts.</p>
+    
+    <h2>Contact Us</h2>
+    <p>Have questions or suggestions? We'd love to hear from you! Visit our <a href="{{ url_for('contact') }}">contact page</a> to get in touch with our team.</p>
+</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Leaflet CSS and JS for interactive maps -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+// Map will be initialized by the main script.js file
+// This ensures proper loading order
+</script>
+{% endblock %}

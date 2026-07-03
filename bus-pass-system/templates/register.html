@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Bus Pass System{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 400px; margin: 2rem auto;">
+    <h2>Register</h2>
+    <form method="POST" id="registerForm">
+        <div class="form-group">
+            <label for="role">Register As:</label>
+            <select name="role" id="role" required>
+                <option value="">Select Role</option>
+                <option value="passenger">Passenger</option>
+                <option value="driver">Driver</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+        </div>
+        
+        <button type="submit" class="btn" data-original-text="Register">Register</button>
+    </form>
+    
+    <p style="text-align: center; margin-top: 1rem;">
+        Already have an account? <a href="{{ url_for('login') }}">Login here</a>
+    </p>
+</div>
+{% endblock %}

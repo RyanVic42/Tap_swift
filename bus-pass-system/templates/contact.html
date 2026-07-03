@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Contact - Bus Pass System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Contact Us</h1>
+    <p>We're here to help! Get in touch with us using the form below or through our contact information.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+    <div class="card">
+        <h2>Send us a Message</h2>
+        <form method="POST" id="contactForm">
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" name="name" id="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea name="message" id="message" rows="5" required placeholder="Tell us how we can help you..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn" data-original-text="Send Message">Send Message</button>
+        </form>
+    </div>
+    
+    <div class="card">
+        <h2>Contact Information</h2>
+        
+        <div style="margin-bottom: 1.5rem;">
+            <h3>📍 Address</h3>
+            <p>Moi University<br>
+            P.O. Box 3900-30100<br>
+            Eldoret, Kenya</p>
+        </div>
+        
+        <div style="margin-bottom: 1.5rem;">
+            <h3>📞 Phone</h3>
+            <p>+254 700 000 000</p>
+        </div>
+        
+        <div style="margin-bottom: 1.5rem;">
+            <h3>✉️ Email</h3>
+            <p>info@buspass.co.ke<br>
+            support@buspass.co.ke</p>
+        </div>
+        
+        <div style="margin-bottom: 1.5rem;">
+            <h3>🕒 Office Hours</h3>
+            <p>Monday - Friday: 8:00 AM - 5:00 PM<br>
+            Saturday: 9:00 AM - 1:00 PM<br>
+            Sunday: Closed</p>
+        </div>
+        
+        <div>
+            <h3>🚨 Emergency Support</h3>
+            <p>For urgent issues, call:<br>
+            <strong>+254 700 000 001</strong><br>
+            Available 24/7</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Frequently Asked Questions</h2>
+    
+    <h3>How do I register for a bus pass?</h3>
+    <p>Click on the "Register" link in the navigation menu, choose "Passenger" as your role, and fill in your details. Once registered, you can generate your digital bus pass.</p>
+    
+    <h3>What payment methods do you accept?</h3>
+    <p>We accept M-Pesa, Airtel Money, and bank transfers for account top-ups.</p>
+    
+    <h3>How do I use my digital pass?</h3>
+    <p>Simply show the QR code on your phone to the driver when boarding the bus. The driver will scan it to verify your pass.</p>
+    
+    <h3>What if I lose my phone?</h3>
+    <p>Contact our support team immediately. We can help you recover your account and generate a new pass on a different device.</p>
+    
+    <h3>How do I become a driver on the platform?</h3>
+    <p>Register as a driver through our registration page. Our team will review your application and provide you with access to the driver portal.</p>
+</div>
+{% endblock %}
