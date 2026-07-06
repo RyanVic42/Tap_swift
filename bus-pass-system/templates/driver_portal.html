@@ -65,21 +65,88 @@
 {% block scripts %}
 <script>
 function startScanner() {
-    // Simulate QR scanner
-    showAlert('QR Scanner started. Point camera at QR code.', 'success');
-    
-    // Simulate scan result after 3 seconds
-    setTimeout(() => {
-        const result = document.getElementById('scanner-result');
-        const info = document.getElementById('passenger-info');
-        info.innerHTML = `
-            <p><strong>Passenger:</strong> john_doe</p>
-            <p><strong>Pass Status:</strong> Valid</p>
-            <p><strong>Balance:</strong> KES 500</p>
-        `;
-        result.style.display = 'block';
-        showAlert('QR Code scanned successfully!', 'success');
-    }, 3000);
+
+const result = document.getElementById("scanner-result");
+const info = document.getElementById("passenger-info");
+
+// Create scanner container if it doesn't exist
+if (!document.getElementById("reader")) {
+
+    const reader = document.createElement("div");
+    reader.id = "reader";
+    reader.style.width = "350px";
+    reader.style.marginTop = "20px";
+
+    document.querySelector(".card").appendChild(reader);
+}
+
+const scanner = new Html5Qrcode("reader");
+
+scanner.start(
+    {
+        facingMode: "environment"
+    },
+    {
+        fps: 10,
+        qrbox: 250
+    },
+
+    function(decodedText) {
+
+        scanner.stop();
+
+        fetch("/verify_qr", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                qr_data: decodedText
+            })
+
+        })
+
+        .then(response => response.json())
+
+        .then(data => {
+
+            result.style.display = "block";
+
+            info.innerHTML = `
+                <p><strong>Passenger:</strong> ${data.passenger}</p>
+                <p><strong>Status:</strong> ${data.status}</p>
+                <p><strong>Pass Type:</strong> ${data.pass_type}</p>
+                <p><strong>Route:</strong> ${data.route}</p>
+                <p><strong>Expiry:</strong> ${data.expiry}</p>
+            `;
+
+            if(data.status === "Valid"){
+
+                showAlert("Valid Bus Pass ✔", "success");
+
+            }else{
+
+                showAlert("Invalid Bus Pass ✖", "error");
+
+            }
+
+        });
+
+    },
+
+    function(errorMessage){
+        // Ignore scan errors
+    }
+
+).catch(err => {
+
+    showAlert("Camera permission denied or unavailable.", "error");
+
+});
+
 }
 
 function verifyPassenger() {
