@@ -24,6 +24,8 @@ logger = logging.getLogger(__name__)
 # Database initialization
 DB_NAME = os.path.join(BASE_DIR, "buspass.db")
 
+print("DATABASE PATH:", DB_NAME)
+print("DATABASE EXISTS:", os.path.exists(DB_NAME))
 MOBILE_PAYMENT_METHODS = {"M-Pesa", "Airtel Money"}
 KENYAN_BANKS = {
     "Absa Bank Kenya PLC",
