@@ -199,11 +199,16 @@ def login():
         password = request.form['password']
         role = request.form['role']
         
+        print("Username:", repr(username))
+        print("Password:", repr(password))
+        print("Role:", repr(role))
+
         with sqlite3.connect(DB_NAME) as conn:
             cursor = conn.cursor()
             if role == 'passenger':
                 cursor.execute("SELECT * FROM passengers WHERE username = ? AND password = ?", (username, password))
                 user = cursor.fetchone()
+                print("User found:", user)
                 if user:
                     session['username'] = username
                     session['role'] = 'passenger'
